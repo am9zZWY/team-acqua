@@ -1,5 +1,6 @@
 # Remove shitty .idea files
 .idea
 
-# Do not commit the csv file
+
 *.csv
+plots/
