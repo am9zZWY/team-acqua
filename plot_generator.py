@@ -1,13 +1,11 @@
-import math
-
-import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import pandas as pd
 from tueplots.constants.color import rgb
 
 # ENTER YOUR VARIABLE HERE
 # ========================
-variables = ['Total water withdrawal per capita', 'Total renewable water resources per capita']
+variables = ['Total water withdrawal', 'Total exploitable water resources']
 
 # Download the data from https://yaon.org/data.csv
 
@@ -68,13 +66,16 @@ for country in df['Country'].unique():
     ax.xaxis.set_ticks_position('both')
     ax.xaxis.set_minor_locator(plt.MultipleLocator(1))
 
+    # Iterate through all variables
     for (index, variable) in enumerate(relevant_vars):
         if variable not in df.columns:
             continue
 
+        # Filter data for the current variable
         data = country_data[variable]
 
         # Plotting
+        # For each variable, use a different color
         color = colors[index % len(colors)]
         ax.plot(years, data, marker='o', linestyle='-', color=color, linewidth=1, markersize=3)
 
