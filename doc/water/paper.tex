@@ -1,0 +1,211 @@
+%%%%%%%% ICML 2023 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+\usepackage{tikz}
+% Corporate Design of the University of Tübingen
+% Primary Colors
+\definecolor{TUred}{RGB}{165,30,55}
+\definecolor{TUgold}{RGB}{180,160,105}
+\definecolor{TUdark}{RGB}{50,65,75}
+\definecolor{TUgray}{RGB}{175,179,183}
+
+% Secondary Colors
+\definecolor{TUdarkblue}{RGB}{65,90,140}
+\definecolor{TUblue}{RGB}{0,105,170}
+\definecolor{TUlightblue}{RGB}{80,170,200}
+\definecolor{TUlightgreen}{RGB}{130,185,160}
+\definecolor{TUgreen}{RGB}{125,165,75}
+\definecolor{TUdarkgreen}{RGB}{50,110,30}
+\definecolor{TUocre}{RGB}{200,80,60}
+\definecolor{TUviolet}{RGB}{175,110,150}
+\definecolor{TUmauve}{RGB}{180,160,150}
+\definecolor{TUbeige}{RGB}{215,180,105}
+\definecolor{TUorange}{RGB}{210,150,0}
+\definecolor{TUbrown}{RGB}{145,105,70}
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2023} with \usepackage[nohyperref]{icml2023} above.
+\usepackage{hyperref}
+
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage[accepted]{icml2023}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+%\usepackage[disable,textsize=tiny]{todonotes}
+\usepackage[textsize=tiny]{todonotes}
+\usepackage{comment}
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{H2Ope - Is there any for our fresh water?}
+
+\begin{comment}
+Title Suggestions
+
+- Fresh water - is it really that fresh
+- Fresh water - How little is little?
+- FRESH: Free (Water) Resource Estimates Shrink Harshly
+- H2Ope - Is there any for our fresh water?
+- DROWN - Daily Rain Owes Water Nothing
+- CHRIS - CHRIStian
+- 404 - Fresh Water not found
+- 403 - Not authorized to access fresh water
+- 402 - Payment required for fresh water
+
+- WATERWISE - Worldwide Analysis of Treatment, Exploitation, Resources, and WIse Sourcing Evaluation
+- AQUASTAT - Analysis of QUAlity, Sourcing, Treatment, Accessibility, and Trends in Global Water Use
+- H2OPE - Is there any for our fresh water?
+- H2OPE - H2O (Water) Policy and Economics: A Statistical Evaluation of International Water Management
+- STREAM - Statistical Trends in Resources, Exploitation, Access, and Management of Water Globally
+- GLOBEWET - GLObal Benchmarking and Evaluation of Water Efficiency and Treatment
+
+
+\end{comment}
+
+
+\begin{document}
+\twocolumn[
+\icmltitle{Assessing the Blue Planet: A Comprehensive Study of Global Water Resources}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2023
+% package.
+
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Simon Fehrenbach}{equal,first}
+\icmlauthor{Christian Jestädt}{equal,second}
+\icmlauthor{Marten Kreis}{equal,third}
+\icmlauthor{Josef Müller}{equal,fourth}
+\end{icmlauthorlist}
+
+% fill in your matrikelnummer, email address, degree, for each group member
+\icmlaffiliation{first}{5451553, simon.fehrenbach@gmail.com, Bsc Sociology with a minor in Computer Science}
+\icmlaffiliation{second}{6071013, christian.jestaedt@student.uni-tuebingen.de, BSc Informatik}
+\icmlaffiliation{third}{6570772, marten.kreis@student.uni-tuebingen.de, MSc Computer Informatics}
+\icmlaffiliation{fourth}{6565774, josef.mueller@student.uni-tuebingen.de, MSc Computer Informatics}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{Machine Learning, ICML}
+
+\vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+\printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
+
+\begin{abstract}
+Globally, around 4 trillion cubic meters of water are consumed every year. However, 97.5\% of the total water resources available on this planet consist of salt water. Thus, the access to a fresh water supply is of critical importance. With a steadily growing population and increasing temperatures, some countries are faced with the problem of dwindling fresh water supplies.
+
+Within the scope of this work, we use global data to understand and visualize global fresh water availability, usage and treatment processes. This could provide a general grasp of the topic and forms a foundation for more in-depth analysis.
+The main data set that is going to be used for this project is the \href{https://data.apps.fao.org/aquastat/?lang=en}{FAO AQUASTAT} data set which provides a broad range of metrics regarding fresh water consumption and also influx from the last centuries.
+\end{abstract}
+
+\begin{comment}
+- In- and outflow of water
+    - analyze:
+        - Trinkwasseraufbereitung
+        - Regenfall
+        - Grundwasser
+        - ...
+- fresh water withdrawal (normalized) as % of total renewable water resources (wasserknappheit)
+    - important quantities: population, water inflow, maybe rain etc.
+- 
+
+\end{comment}
+
+\begin{comment}
+Put your abstract here. Mention, in two sentences, what you are planning to work on. 
+Then, mention which dataset you are planning to use. Include \href{https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/data/}{a link} to the dataset you are planning to use (If you are planning to collect your own data, explain how you are going to do so). If possible, mention (one sentendependce) how you came across this dataset, or why you decided to do this. Explain what kind of analysis you are planning. Finally, declare which results your are expecting to achieve. Your entire abstract should be at most 20 lines long.
+\end{comment}
+
+\begin{comment}
+1: Beginning:
+    - Bestimmung der Dimension werden zusammen diskutierts
+2: Aufteilung der verschiedenen Untersuchungsaspekte auf die Projektteilnehmer
+    - eventuelle Gemeinsamkeiten zwischen den Aspekten führen zur Zusammenarbeit
+    - eventuell gibt es einzelne Aspekte, die alleine analysiert werden
+\end{comment}
+
+\section{Contribution Plan}
+Christian Jestädt focuses on the graphical visualization of data on map. Simon Fehrenbach prepares the data for visualisation and analysis. Marten Kreis analyses and visualizes water withdrawal over time. Josef Müller focuses on analysing and visualising water treatment and wastewater statistics. All authors will jointly write the text of the report and distribute additional minor visualisation and analysis equally.
+
+
+% Chris was here hihi :)
+% ~ Last quote from JOSEF before drowned in the water (analysis) tragically
+
+\bibliography{references.bib}
+\bibliographystyle{icml2023}
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
