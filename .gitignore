@@ -8,3 +8,6 @@
 # Ignore python related files
 *.pyc
 *.pyo
+
+# Ignore environment related files
+env
