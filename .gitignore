@@ -1,6 +1,14 @@
-# Remove shitty .idea files
+# Remove IDE related files
 .idea
 
-
+# Ignore datasets and outputs
 *.csv
-plots/
+*.pdf
+*.png
+
+# Ignore python related files
+*.pyc
+*.pyo
+
+# Ignore environment related files
+env
