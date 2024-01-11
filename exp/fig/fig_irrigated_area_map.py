@@ -1,6 +1,5 @@
-import numpy as np
-import os
 import matplotlib.pyplot as plt
+import numpy as np
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from src.utils import open_dataset, save_fig, to_dat_path

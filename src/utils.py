@@ -1,14 +1,14 @@
 import math
+import os.path
 from pathlib import Path
 from typing import TextIO
 
 import matplotlib
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 import requests
-import os.path
+import seaborn as sns
 
 FIG_PATH = Path(__file__).parent / '..' / 'doc' / 'fig'
 FIG_EXP_PATH = Path(__file__).parent / '..' / 'exp' / 'fig'

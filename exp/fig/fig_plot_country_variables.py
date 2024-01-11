@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import os
 from tueplots.constants.color import rgb
 
 from src.aquastat_utils import get_aquastat
@@ -91,4 +90,4 @@ for country in df['Country'].unique():
 
 print("Plots saved!")
 
-#%%
+# %%
