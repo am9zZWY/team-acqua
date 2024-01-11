@@ -4,6 +4,7 @@
 # Ignore datasets and outputs
 *.csv
 *.pdf
+*.png
 
 # Ignore python related files
 *.pyc
