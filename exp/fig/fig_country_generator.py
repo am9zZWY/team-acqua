@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 from tueplots.constants.color import rgb
 
-from src.aquastat_utils import get_aquastat
+from src.aquastat_utils import get_aquastat, SOURCE_TEXT
 from src.utils import save_fig
 
 FIG_PATH = 'fig_country'
@@ -206,7 +206,7 @@ for single_variable in RELEVANT_VARS:
             ax.legend(thiss, loc='upper left', frameon=False)
 
             # Add source
-            ax.text(0.99, 0.01, 'Source: FAO AQUASTAT', transform=ax.transAxes, fontsize=8, ha='right',
+            ax.text(0.99, 0.01, SOURCE_TEXT, transform=ax.transAxes, fontsize=8, ha='right',
                     color=rgb.tue_gray)
 
             # Save the figure
