@@ -1,0 +1,22 @@
+    Globale Trends in der Süßwassernutzung:
+        Fragestellung: Wie haben sich die globalen Muster des Süßwasserverbrauchs und -entzugs über die Zeit verändert?
+        Methode: Zeitreihenanalyse, um Trends in Variablen wie "Total freshwater withdrawal" und "Agricultural water withdrawal" zu identifizieren.
+
+    Auswirkungen des Klimawandels auf die Wasserressourcen:
+        Fragestellung: Wie beeinflusst der Klimawandel die Verfügbarkeit und Nutzung von Süßwasserressourcen in verschiedenen Regionen?
+        Methode: Regressionsanalyse, um Zusammenhänge zwischen Temperaturveränderungen und Variablen wie "Total renewable water resources" 
+		und "Surface water: total flow of border rivers" zu untersuchen.
+
+    Effizienz der Wasserbehandlung und -nutzung:
+        Fragestellung: Wie effizient sind verschiedene Länder bei der Nutzung und Behandlung ihrer Süßwasserressourcen?
+        Methode: Benchmarking und Effizienzanalyse, unter Verwendung von Variablen wie "Treated municipal wastewater", 
+		"Agricultural water withdrawal as % of total renewable water resources".
+
+    Vergleich von Wassermanagement-Praktiken:
+        Fragestellung: Welche Wassermanagement-Praktiken sind in Bezug auf die Erhaltung und effiziente Nutzung von Süßwasserressourcen am effektivsten?
+        Methode: Multivariate Regression, um den Einfluss verschiedener Managementpraktiken auf Indikatoren 
+		wie "Total dam capacity" und "Water withdrawal for livestock" zu analysieren.
+
+    Auswirkungen der Urbanisierung auf Wasserressourcen:
+        Fragestellung: Wie wirkt sich das Bevölkerungswachstum und die Urbanisierung auf die Nachfrage und Verfügbarkeit von Süßwasser aus?
+        Methode: Korrelations- und Regressionsanalyse, um den Zusammenhang zwischen "Urban population" und "Municipal water withdrawal" zu untersuchen.
