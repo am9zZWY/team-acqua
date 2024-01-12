@@ -220,7 +220,7 @@ def plot_quality(aquastat_dataframe, variables, include_countries=None):
     plt.show()
 
 
-def plot_world(aquastat_dataframe, variables, year, title=None, include_countries=None):
+def plot_world(aquastat_dataframe, variables, year, title=None, include_countries=None, cmap='RdYlGn'):
     """
     Plot a map to show the quality of the data for each country
     :param aquastat_dataframe: Dataframe.
@@ -263,7 +263,7 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     plt.figure(figsize=(10, math.ceil(math.log(countries_df['Country'].nunique(), 2)) * 5))
 
     # Plot using geopandas
-    world.plot(column=variables[0], vmin=0, vmax=40, legend=True, figsize=(20, 20),
+    world.plot(column=variables[0], vmin=0, vmax=40, legend=True, figsize=(20, 20), cmap=cmap,
                legend_kwds={'label': "Withdrawal (%) of total renewable water resources", 'orientation': "horizontal",
                             'shrink': 0.5})
 
