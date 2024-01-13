@@ -1,8 +1,6 @@
-import math
 import os.path
 from pathlib import Path
 from typing import TextIO
-
 
 import pandas as pd
 import requests

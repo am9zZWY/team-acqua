@@ -70,6 +70,7 @@ AQUASTAT_COUNTRY_MAPPING = {
 
 SOURCE_TEXT = 'Source: AQUASTAT'
 
+
 def get_aquastat(raw=False) -> pd.DataFrame | None:
     file_path = os.path.join(PATH_TO_DAT, FILE_NAME)
     print(f'Getting AQUASTAT dataframe from {file_path} ...')
@@ -277,3 +278,6 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     plt.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
 
     return plt
+
+
+VAR_TO_UNIT_DICT = get_aquastat(True)[['Variable', 'Unit']].drop_duplicates().set_index('Variable').to_dict()['Unit']
