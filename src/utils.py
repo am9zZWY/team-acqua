@@ -2,15 +2,28 @@ import os.path
 from pathlib import Path
 from typing import TextIO
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import requests
+from tueplots import bundles
+
+plt.rcParams.update(bundles.beamer_moml())
+plt.rcParams.update({"figure.dpi": 200})
 
 FIG_PATH = Path(__file__).parent / '..' / 'doc' / 'fig'
 FIG_EXP_PATH = Path(__file__).parent / '..' / 'exp' / 'fig'
 PATH_TO_DAT = Path(__file__).parent / '..' / 'dat'
 
 
-def to_fig_path(experimental=True, file_path=None):
+def to_fig_path(file_path=None, experimental=True):
+    """
+    Returns the path to a file in 'fig' or 'exp/fig' folder.
+
+    :param experimental: If True, the figure will be saved to 'exp/fig'.
+    Otherwise, it will be saved to 'fig'.
+    :param file_path: The location of the file in the 'fig' or 'exp/fig' folder.
+    :return:
+    """
     fig_path = FIG_PATH
     if experimental:
         fig_path = FIG_EXP_PATH
@@ -22,6 +35,12 @@ def to_fig_path(experimental=True, file_path=None):
 
 
 def to_dat_path(file_path=None):
+    """
+    Returns the path to a file in 'dat' folder.
+
+    :param file_path: The location of the file in the 'dat' folder.
+    :return: The path to the file
+    """
     dat_path = PATH_TO_DAT
 
     if file_path is not None:
@@ -34,7 +53,7 @@ def download_dataset(file_path=None, url=None) -> bool:
     """
     Downloads data from a URL and saves it to a file.
 
-    :param file_path: the location to save the file in 'dat' folder. If None, the basename of the url is used
+    :param file_path: The location to save the file in 'dat' folder. If None, the basename of the url is used
     :param url: the URL to download from
     :return: bool indicating success
 
@@ -73,6 +92,13 @@ def download_dataset(file_path=None, url=None) -> bool:
 
 
 def open_dataset(file_path=None, mode='r') -> TextIO | None:
+    """
+    Opens a file in 'dat' folder.
+
+    :param file_path: the location to open the file from 'dat' folder
+    :param mode: the mode to open the file in
+    :return: file object or None if the file could not be opened
+    """
     if file_path is None:
         print('No file name specified!')
         return None
@@ -89,12 +115,12 @@ def open_dataset(file_path=None, mode='r') -> TextIO | None:
 
 def get_dataframe(file_path=None, url=None) -> pd.DataFrame | None:
     """
-    Downloads data from a url and saves it to a file.
+    Downloads data from an url and saves it to a file.
     If the file does not exist, it will be downloaded from the url.
 
     Creates a pandas dataframe from the csv file and returns it
 
-    :param file_path: the location where the file is opened from
+    :param file_path: The location where the file is opened from
     :param url: the URL to download from
     :return: pandas dataframe or None if the file could not be downloaded
     """
@@ -119,15 +145,15 @@ def get_dataframe(file_path=None, url=None) -> pd.DataFrame | None:
     return import_df
 
 
-def save_fig(fig, fig_name=None, fig_path=None, experimental=True) -> str | bool:
+def save_fig(fig: plt, fig_name=None, fig_path=None, experimental=True) -> str | bool:
     """
     Saves a figure to a file.
 
-    :param experimental: if True, the figure will be saved to 'exp/fig'. Otherwise, it will be saved to 'fig'.
-    :param fig: the figure to save
+    :param experimental: If True, the figure will be saved to 'exp/fig'. Otherwise, it will be saved to 'fig'.
+    :param fig: The figure to save
     :param fig_name: the name of the figure
     :param fig_path: the location to save the figure to. IMPORTANT! You don't need to specify 'out' folder.
-    :return: bool indicating success or the path to the saved figure
+    :return: Bool indicating success or the path to the saved figure
 
     Example:
     >>> save_fig(fig, fig_name='my_fig', fig_path='cool_figure')
@@ -135,7 +161,7 @@ def save_fig(fig, fig_name=None, fig_path=None, experimental=True) -> str | bool
 
     The file will be saved as 'fig/out/cool_figure/fig_my_fig.pdf'.
 
-    >>> save_fig(fig, fig_name='my_fig', fig_path='cool_figure', experimental=False)
+    >>> Save_fig(fig, fig_name='my_fig', fig_path='cool_figure', experimental=False)
     ./fig/cool_figure/fig_my_fig.pdf
     """
 

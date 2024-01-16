@@ -1,15 +1,13 @@
-import math
 import os
 from pathlib import Path
 
+import geopandas as gpd
+import math
 import matplotlib
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-
-import geopandas as gpd
-
 from tueplots.constants.color import rgb
 
 from src.utils import get_dataframe, to_dat_path
