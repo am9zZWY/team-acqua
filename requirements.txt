@@ -13,6 +13,9 @@ Cartopy==0.22.0
 certifi==2023.11.17
 cffi==1.16.0
 charset-normalizer==3.3.2
+click==8.1.7
+click-plugins==1.1.1
+cligj==0.7.2
 comm==0.2.1
 contourpy==1.2.0
 cycler==0.12.1
@@ -21,8 +24,10 @@ decorator==5.1.1
 defusedxml==0.7.1
 executing==2.0.1
 fastjsonschema==2.19.1
+fiona==1.9.5
 fonttools==4.47.2
 fqdn==1.5.1
+geopandas==0.14.2
 idna==3.6
 ipykernel==6.29.0
 ipython==8.20.0
