@@ -7,8 +7,8 @@
 Create and activate a virtual environment:
 
 ```
-python3 -m venv env
-source env/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 Install the required packages:
@@ -47,7 +47,7 @@ exploitable water resources
 
 #### 2. Identify Regions with Low Precipitation
 
-1. Plot spatial data as global plot
+1. Plot spatial data as global plot: [Notebook](./exp/exp_global_precipitation.ipynb)
    -> Rainfall did not decline but its distribution changed over time
 
 2. Identify regions where the precipitation is low
@@ -57,7 +57,7 @@ exploitable water resources
 
 #### 1. Map of Global Water Management Strategies
 
-Plot which water management strategies are used globally
+Plot which water management strategies are used globally [Notebook](./exp/exp_global_water_management_strategies.ipynb)
 -> look at all water management strategies for each country and plot the proportion of the strategy
 
 #### 2. Comparative Analysis

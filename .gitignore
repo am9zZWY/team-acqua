@@ -11,7 +11,7 @@
 *.pyo
 
 # Ignore environment related files
-env
+.venv
 
 # Mac related files
 .DS_Store
