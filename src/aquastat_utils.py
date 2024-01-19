@@ -8,9 +8,13 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from tueplots import bundles
 from tueplots.constants.color import rgb
 
 from src.utils import get_dataframe, to_dat_path
+
+plt.rcParams.update(bundles.icml2022())
+plt.rcParams.update({"figure.dpi": 200})
 
 PATH_TO_DAT = Path(__file__).parent / '..' / 'dat'
 FILE_NAME = 'fao_aquastat.csv'
@@ -70,7 +74,7 @@ SOURCE_TEXT = 'Source: AQUASTAT'
 
 
 def get_aquastat(raw=False) -> pd.DataFrame | None:
-    file_path = os.path.join(PATH_TO_DAT, FILE_NAME)
+    file_path = FILE_NAME
     print(f'Getting AQUASTAT dataframe from {file_path} ...')
 
     # Download the data from https://yaon.org/data.csv

@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 from tueplots import bundles
 
-plt.rcParams.update(bundles.beamer_moml())
+plt.rcParams.update(bundles.icml2022())
 plt.rcParams.update({"figure.dpi": 200})
 
 FIG_PATH = Path(__file__).parent / '..' / 'doc' / 'fig'
@@ -68,24 +68,46 @@ def download_dataset(file_path=None, url=None) -> bool:
         print('No url specified!')
         return False
 
-    if file_path is None:
-        # If file_path is None, use the basename of the url
-        file_path = os.path.join(PATH_TO_DAT, os.path.basename(url))
-    else:
-        # Extend file_path with PATH_TO_DAT
-        file_path = os.path.join(PATH_TO_DAT, file_path)
+    dat_file_path = os.path.join(PATH_TO_DAT, file_path)
+    url_file_name = os.path.basename(url)
+    dat_url_file_path = os.path.join(PATH_TO_DAT, url_file_name)
 
-    if os.path.isfile(file_path):
+    if os.path.isfile(dat_file_path):
         print(f'{file_path} already exists.')
     else:
         print(f'{file_path} does not exist.')
-        print(f'Downloading {file_path} ...')
+        print(f'Downloading {url_file_name} ...')
         r = requests.get(url)
-        with open(file_path, 'wb') as f:
+        with open(dat_url_file_path, 'wb') as f:
             bytes_written = f.write(r.content)
             if bytes_written == 0:
-                print(f'Error downloading {file_path}!')
+                print(f'Error downloading {url_file_name}!')
                 return False
+
+        # Check if the file exists
+        if not os.path.isfile(dat_url_file_path):
+            print(f'Downloaded {url_file_name} does not exist.')
+            return False
+
+        # Check if the file is a zip file
+        if dat_url_file_path.endswith('.zip'):
+            # Unzip the file
+            import zipfile
+            print(f'Unzipping {dat_url_file_path} ...')
+            with zipfile.ZipFile(dat_url_file_path, 'r') as zip_ref:
+                zip_ref.extractall(os.path.dirname(file_path))
+            # Remove the zip file
+            print(f'Removing ZIP ...')
+            os.remove(dat_url_file_path)
+
+            # Check if the file in the zip exists
+            if not os.path.isfile(file_path):
+                print(f'Unzipped {file_path} does not exist.')
+                return False
+        else:
+            # Rename the file
+            print(f'Renaming {url_file_name} to {file_path} ...')
+            os.rename(dat_url_file_path, file_path)
 
     # If we get here, the file exists
     return True
@@ -211,3 +233,5 @@ def save_fig(fig: plt, fig_name=None, fig_path=None, experimental=True) -> str |
     print('Done!')
 
     return _internal_fig_path
+
+#%%
