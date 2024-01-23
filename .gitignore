@@ -7,6 +7,11 @@
 *.png
 ./out
 
+# LaTeX related files
+*.aux
+*.log
+*.out
+
 # Ignore python related files
 *.pyc
 *.pyo
