@@ -281,5 +281,11 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
 
     return plt
 
+def rename_aquastat_countries(df):
+    global AQUASTAT_COUNTRY_MAPPING
+
+    for country in df['Country'].unique():
+        if country in AQUASTAT_COUNTRY_MAPPING:
+            df.replace(to_replace={country: AQUASTAT_COUNTRY_MAPPING[country]}, inplace=True)
 
 VAR_TO_UNIT_DICT = get_aquastat(True)[['Variable', 'Unit']].drop_duplicates().set_index('Variable').to_dict()['Unit']
