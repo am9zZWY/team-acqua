@@ -2,18 +2,42 @@
 
 ## Getting started
 
+### Requirements
+
+Make sure you have the following requirements are satisfied before you start:
+
+- LaTeX compiler, e.g., `pdflatex`
+- [`python` version 3 and `pip`](https://www.python.org/downloads/)
+- [`virtualenv`](https://docs.python.org/3/library/venv.html)
+
+If python is already installed, check if its version is `Python 3.1x.x`
+
+```shell
+python --version
+```
+
 ### Prepare the environment
 
-Create and activate a virtual environment:
+This project uses a virtual environment to avoid the pollution of the host python system.
+Follow the steps to activate the virtual environment and install the necessary requirements.
 
-```
+Create the virtual environment:
+
+```shell
 python3 -m venv .venv
+```
+
+You should see a new directory called .venv. This contains `python`, `pip` and libraries.
+
+Activate the virtual environment:
+
+```shell
 source .venv/bin/activate
 ```
 
 Install the required packages:
 
-```
+```shell
 pip install -r requirements.txt
 ```
 
@@ -21,13 +45,15 @@ pip install -r requirements.txt
 
 **Important:**
 
-Make sure that your IDE uses the virtual environment.
+Make sure that your IDE uses the virtual environment too.
 In PyCharm, for example, you can set the Python interpreter in `Settings > Project > Project Interpreter`.
-The interpreter for the virtual environment is located in `env/bin/python`.
+The interpreter for the virtual environment is located in `.venv/bin/python`.
 
 ---
 
 ### Deactivate the environment
+
+If you don't need the environment anymore, you can deactivate it:
 
 ```
 deactivate
@@ -35,11 +61,7 @@ deactivate
 
 ## Create the paper
 
-### Requirements
-
-- LaTeX compiler, e.g., `pdflatex`
-- Python version 3
-- Set-up project with installed requirements (see steps above)
+Before compiling, please make sure that the requirements above are satisfied.
 
 ### Compile the paper
 
@@ -65,7 +87,7 @@ exploitable water resources
 #### 2. Identify Regions with Low Precipitation
 
 1. Plot spatial data as global plot: [Notebook](./exp/exp_global_precipitation.ipynb)
-   -> Rainfall did not decline but its distribution changed over time
+   -> Rainfall did not decline, but its distribution changed over time
 
 2. Identify regions where the precipitation is low
    -> these are regions that are likely to be affected by water scarcity
