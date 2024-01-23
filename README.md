@@ -33,6 +33,23 @@ The interpreter for the virtual environment is located in `env/bin/python`.
 deactivate
 ```
 
+## Create the paper
+
+### Requirements
+
+- LaTeX compiler, e.g., `pdflatex`
+- Python version 3
+- Set-up project with installed requirements (see steps above)
+
+### Compile the paper
+
+To compile the `.tex` files in `doc` you call `./compile-paper.py`.
+Make sure that the python environment is set up the way it's specified above.
+
+```shell
+./compile-paper.py
+```
+
 ## Plan
 
 ### Question 1: "Which regions are mostly affected by climate change in terms of renewable water availability?":
