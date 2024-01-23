@@ -5,9 +5,10 @@ import subprocess
 
 import sys
 
-PAPER_DIR_NAME = "doc"  # Paper directory name
+PAPER_DIR_NAME = "doc/water"  # Paper directory name
 PAPER_NAME = "paper.tex"  # Paper file name
 OUT_DIR_NAME = "out"  # Output directory name
+CALLEE_DIR_NAME = os.path.dirname(os.path.realpath(__file__))  # Callee directory name
 
 
 def call_pdflatex():
@@ -16,10 +17,10 @@ def call_pdflatex():
     os.chdir(PAPER_DIR_NAME)
 
     # Call the pdfLaTeX compiler
-    subprocess.call(["pdflatex", "-output-directory", "../" + OUT_DIR_NAME, PAPER_NAME])
+    subprocess.call(["pdflatex", "-output-directory", os.path.join(CALLEE_DIR_NAME, OUT_DIR_NAME), PAPER_NAME])
 
     # Change back to the original directory
-    os.chdir("..")
+    os.chdir(CALLEE_DIR_NAME)
 
 
 def main():
@@ -42,3 +43,5 @@ def main():
 if __name__ == "__main__":
     main()
     call_pdflatex()
+
+# %%
