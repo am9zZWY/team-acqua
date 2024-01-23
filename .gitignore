@@ -5,6 +5,7 @@
 *.csv
 *.pdf
 *.png
+./out
 
 # Ignore python related files
 *.pyc
