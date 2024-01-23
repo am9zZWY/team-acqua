@@ -49,12 +49,13 @@ def to_dat_path(file_path=None):
     return dat_path
 
 
-def download_dataset(file_path=None, url=None) -> bool:
+def download_dataset(file_path=None, url=None, subfolder = None) -> bool:
     """
     Downloads data from a URL and saves it to a file.
 
     :param file_path: The location to save the file in 'dat' folder. If None, the basename of the url is used
     :param url: the URL to download from
+    :param subfolder: (optional) - name of subfolder in dat directory
     :return: bool indicating success
 
     Example:
@@ -67,10 +68,17 @@ def download_dataset(file_path=None, url=None) -> bool:
     if url is None:
         print('No url specified!')
         return False
-
-    dat_file_path = os.path.join(PATH_TO_DAT, file_path)
+    
     url_file_name = os.path.basename(url)
-    dat_url_file_path = os.path.join(PATH_TO_DAT, url_file_name)
+
+    if subfolder is None:
+        dat_file_path = os.path.join(PATH_TO_DAT, file_path)
+        dat_url_file_path = os.path.join(PATH_TO_DAT, url_file_name)
+    else:
+        dat_file_path = os.path.join(PATH_TO_DAT, subfolder, file_path)
+        dat_url_file_path = os.path.join(PATH_TO_DAT, subfolder, url_file_name)
+
+    
 
     if os.path.isfile(dat_file_path):
         print(f'{file_path} already exists.')
@@ -107,7 +115,8 @@ def download_dataset(file_path=None, url=None) -> bool:
         else:
             # Rename the file
             print(f'Renaming {url_file_name} to {file_path} ...')
-            os.rename(dat_url_file_path, file_path)
+            os.rename(dat_url_file_path, dat_file_path)
+            print("File saved to: ", dat_file_path)
 
     # If we get here, the file exists
     return True
