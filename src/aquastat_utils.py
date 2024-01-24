@@ -262,22 +262,25 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
     world = world.merge(countries_df, left_on='SOVEREIGNT', right_on='Country')
 
+    plt.rcParams.update(bundles.icml2022())
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+
     # Create figure
-    plt.figure(figsize=(10, math.ceil(math.log(countries_df['Country'].nunique(), 2)) * 5))
+    #plt.figure(figsize=(10, math.ceil(math.log(countries_df['Country'].nunique(), 2)) * 5))
 
     # Plot using geopandas
-    world.plot(column=variables[0], vmin=0, vmax=40, legend=True, figsize=(20, 20), cmap=cmap,
-               legend_kwds={'label': "Withdrawal (%) of total renewable water resources", 'orientation': "horizontal",
+    world.plot(column=variables[0], ax = ax, vmin=0, vmax=40, legend=True, figsize=(20, 20), cmap=cmap,
+               legend_kwds={'label': "Withdrawal (\%) of total renewable water resources", 'orientation': "horizontal",
                             'shrink': 0.5})
 
-    plt.title(title)
-
+    ax.set_title(title)
+    ax.axis("off")
+    ax.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
     # Add source
-    plt.text(0.5, 0.05, SOURCE_TEXT, horizontalalignment='center', verticalalignment='center',
+    plt.text(0.5, 0.05, SOURCE_TEXT, fontsize = 'xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
-
-    plt.axis('on')
-    plt.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
+    
 
     return plt
 
