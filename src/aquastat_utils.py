@@ -94,6 +94,9 @@ def get_aquastat(raw=False) -> pd.DataFrame | None:
     df = import_df.pivot_table(index=['Country', 'Year'], columns='Variable', values='Value', aggfunc='first')
     df.reset_index(inplace=True)
 
+    # Rename some countries to be compatible with the world map
+    rename_aquastat_countries(df)
+
     return df
 
 
@@ -281,11 +284,14 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
 
     return plt
 
+
 def rename_aquastat_countries(df):
     global AQUASTAT_COUNTRY_MAPPING
+    print('Renaming countries ...')
 
     for country in df['Country'].unique():
         if country in AQUASTAT_COUNTRY_MAPPING:
             df.replace(to_replace={country: AQUASTAT_COUNTRY_MAPPING[country]}, inplace=True)
+
 
 VAR_TO_UNIT_DICT = get_aquastat(True)[['Variable', 'Unit']].drop_duplicates().set_index('Variable').to_dict()['Unit']
