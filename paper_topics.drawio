@@ -1,0 +1,165 @@
+<mxfile host="app.diagrams.net" modified="2024-01-26T15:22:38.393Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15" etag="a-ioxjROsJsdzJe_ZGrI" version="23.0.2" type="device">
+  <diagram name="Seite-1" id="QNoL5dNZPkK5YFAsUeDU">
+    <mxGraphModel dx="1242" dy="827" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-1" target="GWIEUBXgXw_1vazv2kW0-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-1" value="Temperatures changes globally (anomalies)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-2" target="GWIEUBXgXw_1vazv2kW0-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-2" value="Precipitation changes globally (anomalies)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-3" target="GWIEUBXgXw_1vazv2kW0-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-3" value="Some countries face water scarcity" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-4" target="GWIEUBXgXw_1vazv2kW0-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-4" value="Population increases" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-5" target="GWIEUBXgXw_1vazv2kW0-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-5" value="Overall water usage increases" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-9" target="GWIEUBXgXw_1vazv2kW0-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="450" />
+              <mxPoint x="360" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-9" target="GWIEUBXgXw_1vazv2kW0-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="570" y="470" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="490" y="450" />
+              <mxPoint x="590" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-9" value="Water stress increases for some countries" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="430" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-13" target="GWIEUBXgXw_1vazv2kW0-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-13" target="GWIEUBXgXw_1vazv2kW0-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-13" value="What do they do&lt;br&gt;as a countermeasure against&lt;br&gt;water stress?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="470" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-15" target="GWIEUBXgXw_1vazv2kW0-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-15" value="Does population growth&lt;br&gt;affect water usage?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="200" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-21" value="Water treatment?" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-25" target="GWIEUBXgXw_1vazv2kW0-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="570" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-25" value="How much water is treated&lt;br&gt;and how is it used?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="590" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.16;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-21" target="GWIEUBXgXw_1vazv2kW0-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-31" value="Crop irrigation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="480" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-32" target="GWIEUBXgXw_1vazv2kW0-31">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="450" />
+              <mxPoint x="590" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-32" value="What crops does which country&lt;br&gt;grow and irrigate?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="350" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-36" value="Consume less?" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-38" target="GWIEUBXgXw_1vazv2kW0-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-38" value="Are other countries/we affected&lt;br&gt;by water stress?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="540" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-40" target="GWIEUBXgXw_1vazv2kW0-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-40" target="GWIEUBXgXw_1vazv2kW0-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-40" target="GWIEUBXgXw_1vazv2kW0-44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-40" target="GWIEUBXgXw_1vazv2kW0-45">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="830" />
+              <mxPoint x="470" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-40" value="Who profits the most from the&lt;br&gt;water treatment?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="730" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-43" value="Industry?" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="840" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-44" value="Population?" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="840" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-45" target="GWIEUBXgXw_1vazv2kW0-31">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="870" />
+              <mxPoint x="680" y="690" />
+              <mxPoint x="640" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-45" value="Agriculture?" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="410" y="840" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="GWIEUBXgXw_1vazv2kW0-51" target="GWIEUBXgXw_1vazv2kW0-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="700" />
+              <mxPoint x="260" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWIEUBXgXw_1vazv2kW0-51" value="Do water treatment facilities help?" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="720" width="220" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
