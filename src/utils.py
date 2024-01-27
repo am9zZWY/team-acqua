@@ -49,7 +49,7 @@ def to_dat_path(file_path=None):
     return dat_path
 
 
-def download_dataset(file_path=None, url=None, subfolder = None) -> bool:
+def download_dataset(file_path=None, url=None, subfolder=None) -> bool:
     """
     Downloads data from a URL and saves it to a file.
 
@@ -68,7 +68,7 @@ def download_dataset(file_path=None, url=None, subfolder = None) -> bool:
     if url is None:
         print('No url specified!')
         return False
-    
+
     url_file_name = os.path.basename(url)
 
     if subfolder is None:
@@ -77,8 +77,6 @@ def download_dataset(file_path=None, url=None, subfolder = None) -> bool:
     else:
         dat_file_path = os.path.join(PATH_TO_DAT, subfolder, file_path)
         dat_url_file_path = os.path.join(PATH_TO_DAT, subfolder, url_file_name)
-
-    
 
     if os.path.isfile(dat_file_path):
         print(f'{file_path} already exists.')
@@ -243,4 +241,16 @@ def save_fig(fig: plt, fig_name=None, fig_path=None, experimental=True) -> str |
 
     return _internal_fig_path
 
-#%%
+
+def make_list(maybe_list: str | list, repeat):
+    """
+    Takes a string or a list of strings and
+    returns a list of strings
+    """
+
+    if maybe_list is None:
+        return []
+
+    if isinstance(maybe_list, list):
+        return maybe_list
+    return [maybe_list] * repeat
