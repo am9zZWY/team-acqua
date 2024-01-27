@@ -226,18 +226,20 @@ def plot_quality(aquastat_dataframe, variables, include_countries=None):
     plt.show()
 
 
-def plot_world(aquastat_dataframe, variables, year, title=None, include_countries=None, cmap='RdYlGn'):
+def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=None, cmap='RdYlGn', fig=None,
+               ax=None):
     """
     Plot a map to show the quality of the data for each country
     :param aquastat_dataframe: Dataframe.
-    :param variables: Variables to check for.
-    :param include_countries: Optional. Filter for specific countries.
-    """
-    if include_countries is None:
-        include_countries = []
+    :param variable: Variables to check for.
+    :param vmin_max: Optional. Min and max values for the colormap.
+    :param year: Optional. Filter for specific year.
+    :param title: Optional. Title of the plot.
+    :param cmap: Optional. Colormap to use.
+    :param fig: Optional. Figure to plot on.
+    :param ax: Optional. Axis to plot on.
 
-    if isinstance(variables, str):
-        variables = [variables]
+    """
 
     if year is None:
         print('No year specified!')
@@ -247,43 +249,46 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
         title = 'World Map'
 
     # Extract relevant variables and drop all NaN
-    data = aquastat_dataframe[['Country', 'Year', *variables]]
+    data = aquastat_dataframe[['Country', 'Year', variable]]
     data = data.dropna()
+
+    if year is None:
+        year = data['Year'].max()
 
     # Filter for specific year
     countries_df = data[data['Year'] == year]
 
     # Aggregate data
-    countries_df = countries_df[['Country', *variables]]
+    countries_df = countries_df[['Country', variable]]
 
-    # Rename countries to match the world map
-    for country in countries_df['Country'].unique():
-        replace_to = rename_aquastat_country(country)
-        countries_df.replace(to_replace={country: replace_to}, inplace=True)
-
-    # Merge data with world map
+    # Merge data with a world map
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
-    world = world.merge(countries_df, left_on='SOVEREIGNT', right_on='Country')
+    world = world.set_index('SOVEREIGNT').join(countries_df.set_index('Country'))
 
     plt.rcParams.update(bundles.icml2022())
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1)
 
-    # Create figure
-    #plt.figure(figsize=(10, math.ceil(math.log(countries_df['Country'].nunique(), 2)) * 5))
+    if fig is None or ax is None:
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+    # Get min and max values
+    vmin = world[variable].min()
+    vmax = world[variable].max()
+    if vmin_max is not None:
+        vmin = vmin_max[0]
+        vmax = vmin_max[1]
 
     # Plot using geopandas
-    world.plot(column=variables[0], ax = ax, vmin=0, vmax=40, legend=True, figsize=(20, 20), cmap=cmap,
-               legend_kwds={'label': "Withdrawal (\%) of total renewable water resources", 'orientation': "horizontal",
+    world.plot(column=variable, ax=ax, vmin=vmin, vmax=vmax, legend=True, cmap=cmap,
+               legend_kwds={'label': title, 'orientation': "horizontal",
                             'shrink': 0.5})
 
     ax.set_title(title)
     ax.axis("off")
     ax.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
     # Add source
-    plt.text(0.5, 0.05, SOURCE_TEXT, fontsize = 'xx-small', horizontalalignment='center', verticalalignment='center',
+    plt.text(0.5, 0.05, SOURCE_TEXT, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
-    
 
     return plt
 
