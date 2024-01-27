@@ -70,7 +70,7 @@ AQUASTAT_COUNTRY_MAPPING = {
     'Viet Nam': 'Vietnam',
 }
 
-SOURCE_TEXT = 'Source: AQUASTAT'
+AQUASTAT_SOURCE = 'Source: AQUASTAT'
 
 
 def get_aquastat(raw=False) -> pd.DataFrame | None:
@@ -287,7 +287,7 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
     ax.axis("off")
     ax.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
     # Add source
-    plt.text(0.5, 0.05, SOURCE_TEXT, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
+    plt.text(0.5, 0.05, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
 
     return plt

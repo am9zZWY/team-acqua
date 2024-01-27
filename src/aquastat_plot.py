@@ -8,7 +8,7 @@ from matplotlib import patches, pyplot as plt
 from tueplots import bundles
 from tueplots.constants.color import rgb
 
-from src.aquastat_utils import rename_aquastat_country, SOURCE_TEXT
+from src.aquastat_utils import rename_aquastat_country, AQUASTAT_SOURCE
 from src.utils import make_list, save_fig, to_dat_path
 
 
@@ -184,7 +184,7 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     ax.axis("off")
     ax.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
     # Add source
-    plt.text(0.5, 0.05, SOURCE_TEXT, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
+    plt.text(0.5, 0.05, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
 
     return plt
@@ -213,99 +213,14 @@ def get_growth_rate(series, log_scale=False):
     return rate
 
 
-def plot_growth_rates(
-        data: pd.DataFrame,
-        variable: str,
-        cmap: str = 'cividis',
-        title_var: str = None,
-        log_scale: bool = False,
-        fig=None,
-        ax=None
-):
-    """
-    Plot relative growth rates for a variable on a world map.
-    :param data: Dataframe containing countries, years, and variables to plot.
-    :param variable: Variable to plot.
-    :param cmap: Preferred colormap for plotting. The default is 'cividis'.
-    :param title_var: Preferred form of variable in title.
-    :param log_scale: Whether to use a log scale for the growth rates.
-    :param fig: Optional existing figure object to plot on.
-    :param ax: Optional existing axes object to plot on.
-    :return: fig, ax (matplotlib figure and axes objects)
-    """
-
-    font_size = 15
-
-    '''Get Rates'''
-    # Pivot the DataFrame to have years as the index and countries as columns
-    df_pivot = data.pivot(index='Year', columns='Country', values=variable).dropna()
-    # Apply the function to calculate growth rate for each country
-    rates = df_pivot.apply(get_growth_rate, log_scale=log_scale)
-    # Convert the results to a DataFrame
-    rates_df = rates.reset_index(name='Relative growth rate')
-
-    # Get map
-    world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
-    # Join Data to map
-    merged = world.set_index('SOVEREIGNT').join(rates_df.set_index('Country'))
-    vmax = max(abs(merged['Relative growth rate'].min()), merged['Relative growth rate'].min())
-
-    # Create fig and ax if not provided
-    if not fig or not ax:
-        fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-
-    # Plotting
-    merged.plot(
-        column='Relative growth rate',
-        ax=ax, legend=True,
-        missing_kwds={"color": "lightgrey", "label": "No Data", "hatch": "//"},
-        cmap=cmap,
-        vmin=-vmax, vmax=vmax,
-        edgecolor='black',  # Add black borders for each country
-        linewidth=0.8,  # Adjust line width of the borders
-        legend_kwds={
-            'label': "Relative Growth Rate [log10 %]" if log_scale else "Relative Growth Rate [\%]",
-            'orientation': "horizontal",
-        }
-    )
-
-    # Set title
-    years = df_pivot.index
-    if not title_var:
-        title_var = variable
-    ax.set_title(f'Relative Growth of {title_var} ({years.min()} - {years.max()})', fontsize=20)
-
-    # Change font sizes
-    cbar = fig.axes[-1]
-    cbar.set_xlabel('Relative Growth Rate [log10 \%]' if log_scale else 'Relative Growth Rate [\%]', fontsize=font_size)
-    for label in cbar.get_xticklabels():
-        label.set_fontsize(font_size)
-
-    # Create a custom legend patch for "No Data"
-    no_data_patch = patches.Patch(color='lightgrey', label='No Data', hatch='//')
-    ax.legend(handles=[no_data_patch], loc='upper right', fontsize=font_size)
-
-    # Remove axis
-    ax.axis('off')
-
-    # Add source text
-    fig.text(0.95, 0.01, SOURCE_TEXT,
-             verticalalignment='bottom', horizontalalignment='right',
-             transform=ax.transAxes,
-             color='grey', fontsize=10)
-
-    # Save figure
-    save_fig(fig, f'growth_rate_{variable.replace(" ", "_")}', 'water_management', experimental=True)
-
-    return fig, ax
-
-
-def plot_growth_rates_m(
+def plot_growth_rate(
         data: pd.DataFrame,
         variables: str,
         cmaps: str = 'cividis',
         title_vars: str = None,
         log_scale: bool = False,
+        fig=None,
+        axs=None
 ):
     """
     Plot relative growth rates for a variable on a world map. Can plot multiple
@@ -316,11 +231,12 @@ def plot_growth_rates_m(
                 Multiple colormaps can be given.
     :param title_vars: Preferred form of variables in title.
     :param log_scale: Whether to use a log scale for the growth rates.
-    :return: fig, axs (matplotlib figure and axes objects)
+    :return: Fig, axs (matplotlib figure and axes objects)
     """
     '''constants'''
     font_size = 15
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
+
     # missing data colors:
     md_facecolor = "white"
     md_edgecolor = "grey"
@@ -329,7 +245,10 @@ def plot_growth_rates_m(
     variables = make_list(variables, 1)
     plots = len(variables)
 
-    fig, axs = plt.subplots(1, plots, figsize=(15 * plots, 10))
+    # Create fig and ax if not provided
+    if not fig or not axs:
+        fig, axs = plt.subplots(1, plots, figsize=(15 * plots, 10))
+
     if plots == 1:
         axs = [axs]
     cmaps = make_list(cmaps, plots)
@@ -391,10 +310,11 @@ def plot_growth_rates_m(
         ax.axis('off')
 
         # Add source text
-        fig.text(0.95, 0.01, SOURCE_TEXT,
+        fig.text(0.95, 0.01, AQUASTAT_SOURCE,
                  verticalalignment='bottom', horizontalalignment='right',
                  transform=ax.transAxes,
                  color='grey', fontsize=font_size * (2 / 3))
+
     # Add main title
     if plots > 1:
         fig.suptitle(f'Relative Growth of Variables ({years.min()} - {years.max()})', fontsize=font_size * (5 / 3))

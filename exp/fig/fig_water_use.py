@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tueplots.constants.color import rgb
 
-from src.aquastat_utils import get_aquastat, SOURCE_TEXT
+from src.aquastat_utils import get_aquastat, AQUASTAT_SOURCE
 from src.utils import save_fig
 
 TARGET_YEAR = 1990
@@ -71,7 +71,7 @@ ax2.set_ylabel("Global Population")
 # ax.legend(relevant_vars, loc='upper left', frameon=False)
 
 # Add source
-ax.text(0.99, 0.01, SOURCE_TEXT, transform=ax.transAxes, fontsize=8, ha='right', color=rgb.tue_gray)
+ax.text(0.99, 0.01, AQUASTAT_SOURCE, transform=ax.transAxes, fontsize=8, ha='right', color=rgb.tue_gray)
 
 # plot legends in one window
 lines, labels = ax.get_legend_handles_labels()
