@@ -72,7 +72,9 @@ Make sure that the python environment is set up the way it's specified above.
 ./compile-paper.py
 ```
 
-## Plan
+## Paper structure and plan
+
+![Paper structure and questions](./paper_topics.drawio.png)
 
 ### Question 1: "Which regions are mostly affected by climate change in terms of renewable water availability?":
 
