@@ -6,6 +6,8 @@ import pandas as pd
 from scipy.stats import linregress
 import seaborn as sns
 from matplotlib import patches, pyplot as plt
+import matplotlib.ticker as mticker
+
 from tueplots import bundles
 from tueplots.constants.color import rgb
 
@@ -266,14 +268,12 @@ def plot_growth_rate(
     sc = ''
     if slope:
         method = get_slope
-        if log_scale:
-            sc = 'log10 '
-        label = f'{sc}slope'
+
+        label = f'Linear regression coefficient'
     else:
         method = get_growth_rate
-        if log_scale:
-            sc = 'log10 '
-        label = f'Relative Growth Rate [{sc}\%]'
+
+        label = f'Relative Growth Rate [$\%$]'
 
     '''ready input for subplots'''
     variables = make_list(variables, 1)
@@ -333,6 +333,10 @@ def plot_growth_rate(
         cbar = fig.axes[-1]
         cbar.set_xlabel(label,
                         fontsize=font_size)
+
+        if log_scale:
+            cbar.xaxis.set_major_formatter(mticker.FuncFormatter(format_tick))
+
         for label in cbar.get_xticklabels():
             label.set_fontsize(font_size)
 
@@ -358,3 +362,7 @@ def plot_growth_rate(
     save_fig(fig, f'growth_rate_{save_name.replace(" ", "_")}', 'water_management', experimental=True)
 
     return fig, axs
+
+def format_tick(val, pos):
+    """Konvertiert log10-Werte zurück zu ursprünglichen Werten."""
+    return f"{10**val:.0f}"
