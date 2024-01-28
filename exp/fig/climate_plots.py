@@ -70,7 +70,7 @@ filtered_data_3 = filtered_data_3.mean(dim = ("time"))
 anomaly_2 = 100 * (filtered_data_3 - filtered_data_2) / filtered_data_2
 
 # Create a plot
-plt.rcParams.update(bundles.icml2022(column='quarter', nrows=2, ncols=1))
+plt.rcParams.update(bundles.icml2022(column='half', nrows=2, ncols=1))
 fig = plt.figure()
 
 ax = fig.add_subplot(2, 1, 2, projection=ccrs.Robinson())
@@ -93,7 +93,7 @@ gl = ax.gridlines(
 
 gl.top_labels = False
 gl.right_labels = False
-ax.set_title("Mean Precipitation Anomalies: " + start_year + " - " + end_year)
+ax.set_title("Precipitation Anomalies: " + start_year + " - " + end_year)
 
 
 #######################################################
@@ -126,7 +126,7 @@ ax = fig.add_subplot(2, 1, 1, projection=ccrs.Robinson())
 ax.coastlines()
 plot = filtered_data["anom"].plot(ax=ax, transform=ccrs.PlateCarree(), cmap=rb_temp, vmin=-3, vmax=3, add_colorbar=False)
 # rename colorbar label
-cb = plt.colorbar(mappable=plot, label = 'Annual surface temperature \n anomalies [°C]', extend = 'both')
+cb = plt.colorbar(mappable=plot, label = 'Surface temperature \n anomalies [°C]', extend = 'both')
 
 # add gridlines to globe
 gl = ax.gridlines(
