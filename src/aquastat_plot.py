@@ -130,7 +130,8 @@ def plot_quality(aquastat_dataframe, variables, include_countries=None):
     plt.show()
 
 
-def plot_world(aquastat_dataframe, variables, year, title=None, include_countries=None, cmap='RdYlGn'):
+def plot_world(aquastat_dataframe, variables, year, title=None, include_countries=None, 
+               cmap='RdYlGn', vmin = 0, vmax = 40, label = "Withdrawal (\%) of total renewable water resources"):
     """
     Plot a map to show the quality of the data for each country
     :param aquastat_dataframe: Dataframe.
@@ -169,7 +170,7 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
     world = world.merge(countries_df, left_on='SOVEREIGNT', right_on='Country')
 
-    plt.rcParams.update(bundles.icml2022())
+    plt.rcParams.update(bundles.icml2022(column='half', nrows=1, ncols=1))
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
 
@@ -177,9 +178,9 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     # plt.figure(figsize=(10, math.ceil(math.log(countries_df['Country'].nunique(), 2)) * 5))
 
     # Plot using geopandas
-    world.plot(column=variables[0], ax=ax, vmin=0, vmax=40, legend=True, figsize=(20, 20), cmap=cmap,
-               legend_kwds={'label': "Withdrawal (\%) of total renewable water resources", 'orientation': "horizontal",
-                            'shrink': 0.5})
+    world.plot(column=variables[0], ax=ax, vmin=vmin, vmax=vmax, legend=True, figsize=(20, 20), cmap=cmap,
+               legend_kwds={'label': label, 'orientation': "horizontal",
+                            'shrink': 0.5, 'extend': 'max'})
 
     ax.set_title(title)
     ax.axis("off")
