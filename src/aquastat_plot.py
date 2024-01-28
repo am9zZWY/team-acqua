@@ -3,6 +3,7 @@ import math
 import geopandas as gpd
 import matplotlib
 import pandas as pd
+from scipy.stats import linregress
 import seaborn as sns
 from matplotlib import patches, pyplot as plt
 from tueplots import bundles
@@ -212,6 +213,25 @@ def get_growth_rate(series, log_scale=False):
             rate = -math.log10(-rate)
     return rate
 
+def get_slope(series, log_scale):
+    y = series.values
+    x = series.index
+
+    slope = linregress(x, y).slope
+
+    # If log scale is true, use log10
+    if log_scale:
+        # If rate is negative, use -log10(-rate)
+        if slope > 0:
+            slope = math.log10(slope)
+        # ... else use log10(rate)
+        elif slope == 0:
+            slope = 0
+        else:
+            slope = -math.log10(abs(slope))
+
+    return slope
+
 
 def plot_growth_rate(
         data: pd.DataFrame,
@@ -220,7 +240,8 @@ def plot_growth_rate(
         title_vars: str = None,
         log_scale: bool = False,
         fig=None,
-        axs=None
+        axs=None,
+        slope=False
 ):
     """
     Plot relative growth rates for a variable on a world map. Can plot multiple
@@ -240,6 +261,19 @@ def plot_growth_rate(
     # missing data colors:
     md_facecolor = "white"
     md_edgecolor = "grey"
+
+    # slope or gr
+    sc = ''
+    if slope:
+        method = get_slope
+        if log_scale:
+            sc = 'log10 '
+        label = f'{sc}slope'
+    else:
+        method = get_growth_rate
+        if log_scale:
+            sc = 'log10 '
+        label = f'Relative Growth Rate [{sc}\%]'
 
     '''ready input for subplots'''
     variables = make_list(variables, 1)
@@ -262,7 +296,7 @@ def plot_growth_rate(
         # Pivot the DataFrame to have years as the index and countries as columns
         df_pivot = data.pivot(index='Year', columns='Country', values=variable).dropna()
         # Apply the function to calculate growth rate for each country
-        rates = df_pivot.apply(get_growth_rate, log_scale=log_scale)
+        rates = df_pivot.apply(method, log_scale=log_scale)
         # Convert the results to a DataFrame
         rates_df = rates.reset_index(name='Relative growth rate')
 
@@ -281,7 +315,7 @@ def plot_growth_rate(
             edgecolor='black',  # Add black borders for each country
             linewidth=0.8,  # Adjust line width of the borders
             legend_kwds={
-                'label': "Relative Growth Rate [log10 %]" if log_scale else "Relative Growth Rate [%]",
+                'label': label,
                 'orientation': "horizontal",
             }
         )
@@ -290,14 +324,14 @@ def plot_growth_rate(
         years = df_pivot.index
         if not title_var:
             title_var = variable
-        plottitle = f'Relative Growth of {title_var} ({years.min()} - {years.max()})'
+        plottitle = f'Growth of {title_var} ({years.min()} - {years.max()})'
         if plots > 1:
             plottitle = title_var
         ax.set_title(plottitle, fontsize=font_size * (4 / 3))
 
         # Change font sizes
         cbar = fig.axes[-1]
-        cbar.set_xlabel('Relative Growth Rate [log10 \%]' if log_scale else 'Relative Growth Rate [\%]',
+        cbar.set_xlabel(label,
                         fontsize=font_size)
         for label in cbar.get_xticklabels():
             label.set_fontsize(font_size)
@@ -317,7 +351,7 @@ def plot_growth_rate(
 
     # Add main title
     if plots > 1:
-        fig.suptitle(f'Relative Growth of Variables ({years.min()} - {years.max()})', fontsize=font_size * (5 / 3))
+        fig.suptitle(f'Growth of Variables ({years.min()} - {years.max()})', fontsize=font_size * (5 / 3))
 
     # Save figure
     save_name = '_and_'.join(variables)
