@@ -110,15 +110,3 @@ Compare countries which are mostly affected by water scarcity to the global tren
 2. Regression: Water Scarcity as Input -> Water Treatment as Output
    Is there a degree of regression?: -> "The higher the Scarcity, the higher the Water Treatment."
 3. ANOVA for categorizing and comparing regional water management strategies.
-
-#### 3. Compare countries
-
-Select countries with similar demographics or water withdrawal rates but differing in water stress.
-Analyze and contrast their water management strategies.
-
-Plot 3: Water Withdrawal on one axis and
-
-2. Water Withdrawal and Agriculture and Industry
-   -> it would be interesting to see if there are regions that are affected by water scarcity and where the water
-   withdrawal is high
-    1. 
