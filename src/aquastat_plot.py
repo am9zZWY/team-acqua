@@ -177,6 +177,9 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
 
     # Merge data with a world map
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
+
+    # Exclude Antarctica
+    world = world[world['SOVEREIGNT'] != 'Antarctica']
     merged = world.set_index('SOVEREIGNT').join(countries_df.set_index('Country'))
 
     # Save plot settings and update with new settings
@@ -201,25 +204,31 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
     # Plotting
     merged.plot(
         column=variable,
-        ax=ax, legend=True,
-        missing_kwds={"color": MISSING_DATA_FACECOLOR, "edgecolor": MISSING_DATA_EDGECOLOR, "label": "No Data",
-                      "hatch": "//"},
+        ax=ax,
+        legend=True,
+        missing_kwds={
+            "color": MISSING_DATA_FACECOLOR,
+            "edgecolor": MISSING_DATA_EDGECOLOR,
+            "label": "No Data",
+            "hatch": "//"
+        },
         cmap=cmap,
-        vmin=vmin, vmax=vmax,
-        linewidth=0.2,
+        vmin=vmin,
+        vmax=vmax,
+        linewidth=0.3,
         edgecolor='black',
         figsize=(20, 20),
         legend_kwds={
             'label': label,
             'orientation': 'horizontal',
             'shrink': 0.5,
-            'extend': 'max'
+            'extend': 'max',
         }
     )
 
     # Create a custom legend patch for "No Data"
     no_data_patch = patches.Patch(facecolor=MISSING_DATA_FACECOLOR, edgecolor=MISSING_DATA_EDGECOLOR,
-                                  label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False,
+                                  label='No Data', hatch='//', linewidth=0.05, linestyle='solid', fill=False,
                                   alpha=0.3)
     ax.legend(handles=[no_data_patch], loc='upper right')
 
@@ -321,6 +330,9 @@ def plot_growth_rate(
     # Get the world map from natual earth
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
 
+    # Exclude Antarctica
+    world = world[world['SOVEREIGNT'] != 'Antarctica']
+
     # Select the method to calculate the growth rate
     if slope:
         method = get_slope
@@ -362,19 +374,25 @@ def plot_growth_rate(
         # Get map
         # Join Data to map
         merged = world.set_index('SOVEREIGNT').join(rates_df.set_index('Country'))
+
         vmax = max(abs(merged['Relative growth rate'].min()), merged['Relative growth rate'].min())
 
         # Plotting
         merged.plot(
-            column=f'Relative growth rate',
-            ax=ax, legend=True,
-            missing_kwds={"color": MISSING_DATA_FACECOLOR, "edgecolor": MISSING_DATA_EDGECOLOR, "label": "No Data",
-                          "hatch": "//"},
+            column='Relative growth rate',  # Replace with your column name
+            ax=ax,
+            legend=True,
+            missing_kwds={
+                "color": MISSING_DATA_FACECOLOR,
+                "edgecolor": MISSING_DATA_EDGECOLOR,
+                "label": "No Data",
+                "hatch": "//"
+            },
             cmap=cmap,
-            vmin=-vmax, vmax=vmax,
-            linewidth=0.2,
+            vmin=-vmax,
+            vmax=vmax,
+            linewidth=0.3,  # Increased line width for visibility
             edgecolor='black',
-            figsize=(20, 20),
             legend_kwds={
                 'label': variable,
                 'orientation': 'horizontal',
@@ -410,7 +428,7 @@ def plot_growth_rate(
         ax.axis('off')
 
         # Add source text
-        fig.text(0.5, 0.2, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center',
+        fig.text(0.5, 0.05, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center',
                  verticalalignment='center',
                  transform=plt.gca().transAxes, color=rgb.tue_gray)
 
@@ -428,8 +446,3 @@ def plot_growth_rate(
     plt.show()
 
     return fig, axs
-
-
-def format_tick(val, pos):
-    """Konvertiert log10-Werte zurück zu ursprünglichen Werten."""
-    return f"{10 ** val:.0f}"
