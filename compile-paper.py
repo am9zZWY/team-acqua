@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 CALLEE_DIR = os.path.dirname(os.path.realpath(__file__))  # Callee directory name
-PAPER_DIR = os.path.join(CALLEE_DIR, "doc/water")  # Paper directory name
+PAPER_DIR = os.path.join(CALLEE_DIR, "doc")  # Paper directory name
 PAPER_NAME = "paper.tex"  # Paper file name
 OUT_DIR = os.path.join(CALLEE_DIR, "out")  # Output directory name
 
