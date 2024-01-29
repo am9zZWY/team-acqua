@@ -19,123 +19,6 @@ MISSING_DATA_FACECOLOR = "white"
 MISSING_DATA_EDGECOLOR = "grey"
 
 
-def show_data(df, variables, include_countries=None):
-    """
-    Creates a plot showing whether data exists for variables in countries and years.
-    If multiple variable names are given, it looks if all are present for a year/country.
-
-    :param df: Dataframe.
-    :param variables: Variables to check for.
-    :param include_countries: Optional. Filter for specific countries.
-    """
-    if include_countries is None:
-        include_countries = []
-
-    if isinstance(variables, str):
-        variables = [variables]
-
-    '''Extract relevant variables and drop all NaN'''
-    data = df[['Country', 'Year', *variables]]
-    if include_countries:
-        data = data[data['Country'].isin(include_countries)]
-    data = data.dropna()
-
-    '''Create dataframe for heatmap'''
-    years_data = data[['Country', 'Year']]
-    years_df = years_data.pivot_table(index=['Country'], columns='Year', values='Year', aggfunc=lambda x: True,
-                                      fill_value=False)
-    years_df['True_Count'] = years_df.sum(axis=1)
-    years_df = years_df.sort_values(by='True_Count', ascending=True)
-    years_df.drop('True_Count', axis=1, inplace=True)
-
-    df_numeric = years_df.replace({True: 1, False: 0})
-
-    '''spaß mit colormap'''
-    cmap_name = 'RdYlGn'
-    cmap = matplotlib.colormaps[cmap_name]
-    color_0 = cmap(0.0)
-    color_1 = cmap(1.0)
-
-    '''create heatmap'''
-    plt.figure(figsize=(10, math.ceil(math.log(years_data['Country'].nunique(), 2)) * 5))
-    ax = sns.heatmap(df_numeric,
-                     annot=False,
-                     cmap=cmap_name,
-                     linewidths=0.5,
-                     linecolor='gray',
-                     cbar=False,
-                     vmin=0,
-                     vmax=1
-                     )
-
-    # Manuelle Legende
-    blue_patch = patches.Patch(color=color_0, label='no data')
-    red_patch = patches.Patch(color=color_1, label='data')
-    plt.legend(handles=[blue_patch, red_patch], loc='upper left')
-
-    plt.title('Presence of variables in year')
-    plt.xlabel('year')
-    plt.ylabel('country')
-
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_quality(aquastat_dataframe, variables, include_countries=None):
-    """
-    Plot a map to show the quality of the data for each country
-    :param aquastat_dataframe: Dataframe.
-    :param variables: Variables to check for.
-    :param include_countries: Optional. Filter for specific countries.
-    """
-    if include_countries is None:
-        include_countries = []
-
-    if isinstance(variables, str):
-        variables = [variables]
-
-    '''Extract relevant variables and drop all NaN'''
-    data = aquastat_dataframe[['Country', 'Year', *variables]]
-    if include_countries:
-        data = data[data['Country'].isin(include_countries)]
-    data = data.dropna()
-
-    '''Create dataframe for map'''
-    countries_data = data[['Country', 'Year']]
-    countries_df = countries_data.pivot_table(index=['Country'], columns='Year', values='Year', aggfunc=lambda x: True,
-                                              fill_value=False)
-    countries_df['True_Count'] = countries_df.sum(axis=1) / countries_df.shape[1]
-    countries_df = countries_df.sort_values(by='True_Count', ascending=True)
-
-    years_data = data[['Country', 'Year']]
-    years_df = years_data.pivot_table(index=['Country'], columns='Year', values='Year', aggfunc=lambda x: True,
-                                      fill_value=False)
-    years_df['True_Count'] = years_df.sum(axis=1)
-    years_df = years_df.sort_values(by='True_Count', ascending=True)
-    years_df.drop('True_Count', axis=1, inplace=True)
-
-    '''Rename some countries'''
-    for country in countries_df['Country'].unique():
-        replace_to = rename_aquastat_country(country)
-        countries_df.replace(to_replace={country: replace_to}, inplace=True)
-
-    '''Create map'''
-    plt.figure(figsize=(10, math.ceil(math.log(years_data['Country'].nunique(), 2)) * 5))
-    '''Plot using geopandas'''
-
-    world = gpd.read_file(to_dat_path('naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
-    world = world.merge(countries_df, left_on='SOVEREIGNT', right_on='Country')
-    world.plot(column='True_Count', cmap='RdYlGn', legend=True, figsize=(20, 20),
-               legend_kwds={'label': "Data Quality", 'orientation': "horizontal", 'shrink': 0.5})
-
-    plt.title('Presence of variables in year')
-
-    plt.axis('on')
-    plt.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
-
-    plt.show()
-
-
 def format_tick(val, pos):
     """Konvertiert log10-Werte zurück zu ursprünglichen Werten."""
     return f"{10 ** val:.0f}"
@@ -176,11 +59,13 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
     countries_df = countries_df[['Country', variable]]
 
     # Merge data with a world map
-    world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
+    world = gpd.read_file(to_dat_path(
+        file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
 
     # Exclude Antarctica
     world = world[world['SOVEREIGNT'] != 'Antarctica']
-    merged = world.set_index('SOVEREIGNT').join(countries_df.set_index('Country'))
+    merged = world.set_index('SOVEREIGNT').join(
+        countries_df.set_index('Country'))
 
     # Save plot settings and update with new settings
     settings = plt.rcParams.copy()
@@ -242,14 +127,16 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
         # Correct ticks for log scale
         cbar.xaxis.set_major_formatter(mticker.FuncFormatter(format_tick))
 
-    ax.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
+    ax.grid(which='major', axis='both', linestyle='-',
+            color='lightgrey', alpha=0.5)
 
     # Add source
     plt.text(0.5, 0.05, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
 
     # Save figure
-    save_fig(fig, f'world_map_{variable.replace(" ", "_")}_{year}', 'water_management', experimental=True)
+    save_fig(fig, f'world_map_{variable.replace(" ", "_")}_{year}',
+             'water_management', experimental=True)
 
     # Restore plot settings
     plt.rcParams.update(settings)
@@ -328,7 +215,8 @@ def plot_growth_rate(
     """
 
     # Get the world map from natual earth
-    world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
+    world = gpd.read_file(to_dat_path(
+        file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
 
     # Exclude Antarctica
     world = world[world['SOVEREIGNT'] != 'Antarctica']
@@ -347,7 +235,8 @@ def plot_growth_rate(
 
     # Save plot settings and update with new settings
     settings = plt.rcParams.copy()
-    plt.rcParams.update(bundles.icml2022(column='half', nrows=1, ncols=number_of_plots))
+    plt.rcParams.update(bundles.icml2022(
+        column='half', nrows=1, ncols=number_of_plots))
     plt.rcParams.update({"figure.dpi": 300})
 
     # Create fig and ax if not provided
@@ -365,7 +254,8 @@ def plot_growth_rate(
     for ax, variable, cmap, title_var in zip(axs, variables, cmaps, title_vars):
         '''Get Rates'''
         # Pivot the DataFrame to have years as the index and countries as columns
-        df_pivot = data.pivot(index='Year', columns='Country', values=variable).dropna()
+        df_pivot = data.pivot(
+            index='Year', columns='Country', values=variable).dropna()
         # Apply the function to calculate growth rate for each country
         rates = df_pivot.apply(method, log_scale=log_scale)
         # Convert the results to a DataFrame
@@ -373,9 +263,11 @@ def plot_growth_rate(
 
         # Get map
         # Join Data to map
-        merged = world.set_index('SOVEREIGNT').join(rates_df.set_index('Country'))
+        merged = world.set_index('SOVEREIGNT').join(
+            rates_df.set_index('Country'))
 
-        vmax = max(abs(merged['Relative growth rate'].min()), merged['Relative growth rate'].min())
+        vmax = max(abs(merged['Relative growth rate'].min()),
+                   merged['Relative growth rate'].min())
 
         # Plotting
         merged.plot(
@@ -438,7 +330,8 @@ def plot_growth_rate(
 
     # Save figure
     save_name = '_and_'.join(variables)
-    save_fig(fig, f'growth_rate_{save_name.replace(" ", "_")}', 'water_management', experimental=True)
+    save_fig(fig, f'growth_rate_{save_name.replace(" ", "_")}',
+             'water_management', experimental=True)
 
     # Restore plot settings
     plt.rcParams.update(settings)
@@ -446,3 +339,125 @@ def plot_growth_rate(
     plt.show()
 
     return fig, axs
+
+
+def show_data(df, variables, include_countries=None):
+    """
+    Creates a plot showing whether data exists for variables in countries and years.
+    If multiple variable names are given, it looks if all are present for a year/country.
+
+    :param df: Dataframe.
+    :param variables: Variables to check for.
+    :param include_countries: Optional. Filter for specific countries.
+    """
+    if include_countries is None:
+        include_countries = []
+
+    if isinstance(variables, str):
+        variables = [variables]
+
+    '''Extract relevant variables and drop all NaN'''
+    data = df[['Country', 'Year', *variables]]
+    if include_countries:
+        data = data[data['Country'].isin(include_countries)]
+    data = data.dropna()
+
+    '''Create dataframe for heatmap'''
+    years_data = data[['Country', 'Year']]
+    years_df = years_data.pivot_table(index=['Country'], columns='Year', values='Year', aggfunc=lambda x: True,
+                                      fill_value=False)
+    years_df['True_Count'] = years_df.sum(axis=1)
+    years_df = years_df.sort_values(by='True_Count', ascending=True)
+    years_df.drop('True_Count', axis=1, inplace=True)
+
+    df_numeric = years_df.replace({True: 1, False: 0})
+
+    '''spaß mit colormap'''
+    cmap_name = 'RdYlGn'
+    cmap = matplotlib.colormaps[cmap_name]
+    color_0 = cmap(0.0)
+    color_1 = cmap(1.0)
+
+    '''create heatmap'''
+    plt.figure(figsize=(10, math.ceil(
+        math.log(years_data['Country'].nunique(), 2)) * 5))
+    ax = sns.heatmap(df_numeric,
+                     annot=False,
+                     cmap=cmap_name,
+                     linewidths=0.5,
+                     linecolor='gray',
+                     cbar=False,
+                     vmin=0,
+                     vmax=1
+                     )
+
+    # Manuelle Legende
+    blue_patch = patches.Patch(color=color_0, label='no data')
+    red_patch = patches.Patch(color=color_1, label='data')
+    plt.legend(handles=[blue_patch, red_patch], loc='upper left')
+
+    plt.title('Presence of variables in year')
+    plt.xlabel('year')
+    plt.ylabel('country')
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_quality(aquastat_dataframe, variables, include_countries=None):
+    """
+    Plot a map to show the quality of the data for each country
+    :param aquastat_dataframe: Dataframe.
+    :param variables: Variables to check for.
+    :param include_countries: Optional. Filter for specific countries.
+    """
+    if include_countries is None:
+        include_countries = []
+
+    if isinstance(variables, str):
+        variables = [variables]
+
+    '''Extract relevant variables and drop all NaN'''
+    data = aquastat_dataframe[['Country', 'Year', *variables]]
+    if include_countries:
+        data = data[data['Country'].isin(include_countries)]
+    data = data.dropna()
+
+    '''Create dataframe for map'''
+    countries_data = data[['Country', 'Year']]
+    countries_df = countries_data.pivot_table(index=['Country'], columns='Year', values='Year', aggfunc=lambda x: True,
+                                              fill_value=False)
+    countries_df['True_Count'] = countries_df.sum(
+        axis=1) / countries_df.shape[1]
+    countries_df = countries_df.sort_values(by='True_Count', ascending=True)
+
+    years_data = data[['Country', 'Year']]
+    years_df = years_data.pivot_table(index=['Country'], columns='Year', values='Year', aggfunc=lambda x: True,
+                                      fill_value=False)
+    years_df['True_Count'] = years_df.sum(axis=1)
+    years_df = years_df.sort_values(by='True_Count', ascending=True)
+    years_df.drop('True_Count', axis=1, inplace=True)
+
+    '''Rename some countries'''
+    for country in countries_df['Country'].unique():
+        replace_to = rename_aquastat_country(country)
+        countries_df.replace(to_replace={country: replace_to}, inplace=True)
+
+    '''Create map'''
+    plt.figure(figsize=(10, math.ceil(
+        math.log(years_data['Country'].nunique(), 2)) * 5))
+    '''Plot using geopandas'''
+
+    world = gpd.read_file(to_dat_path(
+        'naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
+    world = world.merge(countries_df, left_on='SOVEREIGNT', right_on='Country')
+    world.plot(column='True_Count', cmap='RdYlGn', legend=True, figsize=(20, 20),
+               legend_kwds={'label': "Data Quality", 'orientation': "horizontal", 'shrink': 0.5})
+
+    plt.title('Presence of variables in year')
+
+    plt.axis('on')
+    plt.grid(which='major', axis='both', linestyle='-',
+             color='lightgrey', alpha=0.5)
+
+    plt.show()
