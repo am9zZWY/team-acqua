@@ -86,6 +86,13 @@ def get_aquastat(raw=False) -> pd.DataFrame | None:
     # Format dataframe
     import_df.drop(columns=['Unnamed: 0'], inplace=True)
 
+    # Fix some variables
+    map_dict = {
+        'Area equipped for irrigation by direct use of non-treated municipal wastewater ': 'Area equipped for irrigation by direct use of not treated municipal wastewater'
+    }
+    for key, value in map_dict.items():
+        import_df.replace(to_replace={key: value}, inplace=True)
+
     # Return raw dataframe
     if raw:
         return import_df
