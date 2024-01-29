@@ -1,4 +1,10 @@
-# Assessing the Blue Planet: A Comprehensive Study of Global Water Resources
+# Assessing the Blue Planet: Global Insights on Freshwater Challenges and Management Strategies
+
+Authors:
+- Simon Fehrenbach
+- Christian Jestädt
+- Marten Kreis
+- Josef Müller
 
 ## Getting started
 
@@ -63,7 +69,7 @@ deactivate
 
 Before compiling, please make sure that the requirements above are satisfied
 **and** the required $\LaTeX$-packages in `doc/paper.tex` are installed.
-If not, it might still compile, but have may have missing elements.
+If not, it might still compile, but may have missing elements.
 
 ### Compile the paper
 
