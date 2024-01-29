@@ -136,8 +136,13 @@ def plot_quality(aquastat_dataframe, variables, include_countries=None):
     plt.show()
 
 
+def format_tick(val, pos):
+    """Konvertiert log10-Werte zurück zu ursprünglichen Werten."""
+    return f"{10 ** val:.0f}"
+
+
 def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=None, cmap='RdYlGn', fig=None,
-               ax=None):
+               ax=None, log_scale=False):
     """
     Plot a map to show the quality of the data for each country
     :param aquastat_dataframe: Dataframe.
@@ -211,12 +216,22 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
 
     # Create a custom legend patch for "No Data"
     no_data_patch = patches.Patch(facecolor=MISSING_DATA_FACECOLOR, edgecolor=MISSING_DATA_EDGECOLOR,
-                                  label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False, alpha=0.3)
+                                  label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False,
+                                  alpha=0.3)
     ax.legend(handles=[no_data_patch], loc='upper right')
 
+    # Set title
     ax.set_title(title)
+
+    # Axis
     ax.axis("off")
+    if log_scale:
+        cbar = fig.axes[-1]
+        # Correct ticks for log scale
+        cbar.xaxis.set_major_formatter(mticker.FuncFormatter(format_tick))
+
     ax.grid(which='major', axis='both', linestyle='-', color='lightgrey', alpha=0.5)
+
     # Add source
     plt.text(0.5, 0.05, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
@@ -227,7 +242,7 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
     # Restore plot settings
     plt.rcParams.update(settings)
 
-    return plt
+    return fig, ax
 
 
 def get_growth_rate(series, log_scale=False):
@@ -382,14 +397,16 @@ def plot_growth_rate(
 
         # Create a custom legend patch for "No Data"
         no_data_patch = patches.Patch(facecolor=MISSING_DATA_FACECOLOR, edgecolor=MISSING_DATA_EDGECOLOR,
-                                  label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False, alpha=0.5)
+                                      label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False,
+                                      alpha=0.5)
         ax.legend(handles=[no_data_patch], loc='upper right')
 
         # Remove axis
         ax.axis('off')
 
         # Add source text
-        fig.text(0.5, 0.2, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
+        fig.text(0.5, 0.2, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center',
+                 verticalalignment='center',
                  transform=plt.gca().transAxes, color=rgb.tue_gray)
 
     # Add main title
