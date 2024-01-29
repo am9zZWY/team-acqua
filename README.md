@@ -96,7 +96,7 @@ exploitable water resources
 2. Identify regions where the precipitation is low
    -> these are regions that are likely to be affected by water scarcity
 
-### Question 2: "Which water management strategies are used by regions with different levels of water stress?"
+### Question 2: "Which water management strategies are used by regions with high levels of water stress?"
 
 #### 1. Map of Global Water Management Strategies
 
