@@ -61,11 +61,13 @@ deactivate
 
 ## Create the paper
 
-Before compiling, please make sure that the requirements above are satisfied.
+Before compiling, please make sure that the requirements above are satisfied
+**and** the required $\LaTeX$-packages in `doc/paper.tex` are installed.
+If not, it might still compile, but have may have missing elements.
 
 ### Compile the paper
 
-To compile the `.tex` files in `doc` you call `./compile-paper.py`.
+To compile the `paper.tex` file in `doc` you call `./compile-paper.py`.
 Make sure that the python environment is set up the way it's specified above.
 
 ```shell
