@@ -141,7 +141,7 @@ def format_tick(val, pos):
     return f"{10 ** val:.0f}"
 
 
-def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=None, cmap='RdYlGn', fig=None,
+def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=None, cmap='RdYlGn', label=None, fig=None,
                ax=None, log_scale=False):
     """
     Plot a map to show the quality of the data for each country
@@ -195,6 +195,9 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
         vmin = vmin_max[0]
         vmax = vmin_max[1]
 
+    if label is None:
+        label = variable
+
     # Plotting
     merged.plot(
         column=variable,
@@ -207,7 +210,7 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
         edgecolor='black',
         figsize=(20, 20),
         legend_kwds={
-            'label': variable,
+            'label': label,
             'orientation': 'horizontal',
             'shrink': 0.5,
             'extend': 'max'
@@ -241,6 +244,8 @@ def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=Non
 
     # Restore plot settings
     plt.rcParams.update(settings)
+
+    plt.show()
 
     return fig, ax
 
