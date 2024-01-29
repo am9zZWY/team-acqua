@@ -425,6 +425,8 @@ def plot_growth_rate(
     # Restore plot settings
     plt.rcParams.update(settings)
 
+    plt.show()
+
     return fig, axs
 
 
