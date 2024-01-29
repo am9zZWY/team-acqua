@@ -14,6 +14,10 @@ from tueplots.constants.color import rgb
 from src.aquastat_utils import rename_aquastat_country, AQUASTAT_SOURCE
 from src.utils import make_list, save_fig, to_dat_path
 
+# Constants
+MISSING_DATA_FACECOLOR = "white"
+MISSING_DATA_EDGECOLOR = "grey"
+
 
 def show_data(df, variables, include_countries=None):
     """
@@ -132,19 +136,19 @@ def plot_quality(aquastat_dataframe, variables, include_countries=None):
     plt.show()
 
 
-def plot_world(aquastat_dataframe, variables, year, title=None, include_countries=None, 
-               cmap='RdYlGn', vmin = 0, vmax = 40, label = "Withdrawal (\%) of total renewable water resources"):
+def plot_world(aquastat_dataframe, variable, vmin_max=None, year=None, title=None, cmap='RdYlGn', fig=None,
+               ax=None):
     """
     Plot a map to show the quality of the data for each country
     :param aquastat_dataframe: Dataframe.
-    :param variables: Variables to check for.
-    :param include_countries: Optional. Filter for specific countries.
+    :param variable: Variables to check for.
+    :param vmin_max: Optional. Min and max values for the colormap.
+    :param year: Optional. Filter for specific year.
+    :param title: Optional. Title of the plot.
+    :param cmap: Optional. Colormap to use.
+    :param fig: Optional. Figure to plot on.
+    :param ax: Optional. Axis to plot on.
     """
-    if include_countries is None:
-        include_countries = []
-
-    if isinstance(variables, str):
-        variables = [variables]
 
     if year is None:
         print('No year specified!')
@@ -154,35 +158,61 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
         title = 'World Map'
 
     # Extract relevant variables and drop all NaN
-    data = aquastat_dataframe[['Country', 'Year', *variables]]
+    data = aquastat_dataframe[['Country', 'Year', variable]]
     data = data.dropna()
+
+    if year is None:
+        year = data['Year'].max()
 
     # Filter for specific year
     countries_df = data[data['Year'] == year]
 
     # Aggregate data
-    countries_df = countries_df[['Country', *variables]]
+    countries_df = countries_df[['Country', variable]]
 
-    # Rename countries to match the world map
-    for country in countries_df['Country'].unique():
-        replace_to = rename_aquastat_country(country)
-        countries_df.replace(to_replace={country: replace_to}, inplace=True)
-
-    # Merge data with world map
+    # Merge data with a world map
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
-    world = world.merge(countries_df, left_on='SOVEREIGNT', right_on='Country')
+    merged = world.set_index('SOVEREIGNT').join(countries_df.set_index('Country'))
 
+    # Save plot settings and update with new settings
+    settings = plt.rcParams.copy()
     plt.rcParams.update(bundles.icml2022(column='half', nrows=1, ncols=1))
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1)
+    plt.rcParams.update({"figure.dpi": 300})
 
-    # Create figure
-    # plt.figure(figsize=(10, math.ceil(math.log(countries_df['Country'].nunique(), 2)) * 5))
+    if fig is None or ax is None:
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
 
-    # Plot using geopandas
-    world.plot(column=variables[0], ax=ax, vmin=vmin, vmax=vmax, legend=True, figsize=(20, 20), cmap=cmap,
-               legend_kwds={'label': label, 'orientation': "horizontal",
-                            'shrink': 0.5, 'extend': 'max'})
+    # Get min and max values
+    vmin = merged[variable].min()
+    vmax = merged[variable].max()
+    if vmin_max is not None:
+        vmin = vmin_max[0]
+        vmax = vmin_max[1]
+
+    # Plotting
+    merged.plot(
+        column=variable,
+        ax=ax, legend=True,
+        missing_kwds={"color": MISSING_DATA_FACECOLOR, "edgecolor": MISSING_DATA_EDGECOLOR, "label": "No Data",
+                      "hatch": "//"},
+        cmap=cmap,
+        vmin=vmin, vmax=vmax,
+        linewidth=0.2,
+        edgecolor='black',
+        figsize=(20, 20),
+        legend_kwds={
+            'label': variable,
+            'orientation': 'horizontal',
+            'shrink': 0.5,
+            'extend': 'max'
+        }
+    )
+
+    # Create a custom legend patch for "No Data"
+    no_data_patch = patches.Patch(facecolor=MISSING_DATA_FACECOLOR, edgecolor=MISSING_DATA_EDGECOLOR,
+                                  label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False, alpha=0.3)
+    ax.legend(handles=[no_data_patch], loc='upper right')
 
     ax.set_title(title)
     ax.axis("off")
@@ -190,6 +220,12 @@ def plot_world(aquastat_dataframe, variables, year, title=None, include_countrie
     # Add source
     plt.text(0.5, 0.05, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
              transform=plt.gca().transAxes, color=rgb.tue_gray)
+
+    # Save figure
+    save_fig(fig, f'world_map_{variable.replace(" ", "_")}_{year}', 'water_management', experimental=True)
+
+    # Restore plot settings
+    plt.rcParams.update(settings)
 
     return plt
 
@@ -215,6 +251,7 @@ def get_growth_rate(series, log_scale=False):
         else:
             rate = -math.log10(-rate)
     return rate
+
 
 def get_slope(series, log_scale):
     y = series.values
@@ -255,43 +292,44 @@ def plot_growth_rate(
                 Multiple colormaps can be given.
     :param title_vars: Preferred form of variables in title.
     :param log_scale: Whether to use a log scale for the growth rates.
+    :param fig: Optional. Figure to plot on.
+    :param axs: Optional. Axis to plot on.
+    :param slope: Whether to plot the slope or the growth rate.
     :return: Fig, axs (matplotlib figure and axes objects)
     """
-    '''constants'''
-    font_size = 15
+
+    # Get the world map from natual earth
     world = gpd.read_file(to_dat_path(file_path='naturalearth/ne_110m_admin_0_countries.shx'), engine="pyogrio")
 
-    # missing data colors:
-    md_facecolor = "white"
-    md_edgecolor = "grey"
-
-    # slope or gr
-    sc = ''
+    # Select the method to calculate the growth rate
     if slope:
         method = get_slope
-
         label = f'Linear regression coefficient'
     else:
         method = get_growth_rate
-
         label = f'Relative Growth Rate [$\%$]'
 
-    '''ready input for subplots'''
+    # Make sure variables is a list
     variables = make_list(variables, 1)
-    plots = len(variables)
+    number_of_plots = len(variables)
+
+    # Save plot settings and update with new settings
+    settings = plt.rcParams.copy()
+    plt.rcParams.update(bundles.icml2022(column='half', nrows=1, ncols=number_of_plots))
+    plt.rcParams.update({"figure.dpi": 300})
 
     # Create fig and ax if not provided
     if not fig or not axs:
-        fig, axs = plt.subplots(1, plots, figsize=(15 * plots, 10))
+        fig, axs = plt.subplots(1, number_of_plots)
 
-    if plots == 1:
+    if number_of_plots == 1:
         axs = [axs]
-    cmaps = make_list(cmaps, plots)
+    cmaps = make_list(cmaps, number_of_plots)
     title_vars = make_list(title_vars, 1)
-    if len(title_vars) != plots:
-        title_vars = [None] * plots
+    if len(title_vars) != number_of_plots:
+        title_vars = [None] * number_of_plots
 
-    '''plot subplots'''
+    # Plotting
     for ax, variable, cmap, title_var in zip(axs, variables, cmaps, title_vars):
         '''Get Rates'''
         # Pivot the DataFrame to have years as the index and countries as columns
@@ -308,62 +346,66 @@ def plot_growth_rate(
 
         # Plotting
         merged.plot(
-            column='Relative growth rate',
+            column=f'Relative growth rate',
             ax=ax, legend=True,
-            missing_kwds={"color": md_facecolor, "edgecolor": md_edgecolor, "label": "No Data", "hatch": "//"},
+            missing_kwds={"color": MISSING_DATA_FACECOLOR, "edgecolor": MISSING_DATA_EDGECOLOR, "label": "No Data",
+                          "hatch": "//"},
             cmap=cmap,
             vmin=-vmax, vmax=vmax,
-            edgecolor='black',  # Add black borders for each country
-            linewidth=0.8,  # Adjust line width of the borders
+            linewidth=0.2,
+            edgecolor='black',
+            figsize=(20, 20),
             legend_kwds={
-                'label': label,
-                'orientation': "horizontal",
+                'label': variable,
+                'orientation': 'horizontal',
+                'shrink': 0.5,
+                'extend': 'max'
             }
         )
 
         # Set title
         years = df_pivot.index
         if not title_var:
+            # If no title_var is given, use the variable name
             title_var = variable
-        plottitle = f'Growth of {title_var} ({years.min()} - {years.max()})'
-        if plots > 1:
-            plottitle = title_var
-        ax.set_title(plottitle, fontsize=font_size * (4 / 3))
+        plot_title = f'Growth of {title_var} ({years.min()} - {years.max()})'
+        if number_of_plots > 1:
+            plot_title = title_var
+        ax.set_title(plot_title)
 
         # Change font sizes
         cbar = fig.axes[-1]
-        cbar.set_xlabel(label,
-                        fontsize=font_size)
+        cbar.set_xlabel(label)
 
         if log_scale:
             cbar.xaxis.set_major_formatter(mticker.FuncFormatter(format_tick))
 
-        for label in cbar.get_xticklabels():
-            label.set_fontsize(font_size)
-
         # Create a custom legend patch for "No Data"
-        no_data_patch = patches.Patch(facecolor=md_facecolor, edgecolor=md_edgecolor, label='No Data', hatch='//')
-        ax.legend(handles=[no_data_patch], loc='upper right', fontsize=font_size)
+        no_data_patch = patches.Patch(facecolor=MISSING_DATA_FACECOLOR, edgecolor=MISSING_DATA_EDGECOLOR,
+                                  label='No Data', hatch='///', linewidth=0.05, linestyle='solid', fill=False, alpha=0.5)
+        ax.legend(handles=[no_data_patch], loc='upper right')
 
         # Remove axis
         ax.axis('off')
 
         # Add source text
-        fig.text(0.95, 0.01, AQUASTAT_SOURCE,
-                 verticalalignment='bottom', horizontalalignment='right',
-                 transform=ax.transAxes,
-                 color='grey', fontsize=font_size * (2 / 3))
+        fig.text(0.5, 0.2, AQUASTAT_SOURCE, fontsize='xx-small', horizontalalignment='center', verticalalignment='center',
+                 transform=plt.gca().transAxes, color=rgb.tue_gray)
 
     # Add main title
-    if plots > 1:
-        fig.suptitle(f'Growth of Variables ({years.min()} - {years.max()})', fontsize=font_size * (5 / 3))
+    if number_of_plots > 1:
+        fig.suptitle(f'Growth of Variables ({years.min()} - {years.max()})')
 
     # Save figure
     save_name = '_and_'.join(variables)
     save_fig(fig, f'growth_rate_{save_name.replace(" ", "_")}', 'water_management', experimental=True)
 
+    # Restore plot settings
+    plt.rcParams.update(settings)
+
     return fig, axs
+
 
 def format_tick(val, pos):
     """Konvertiert log10-Werte zurück zu ursprünglichen Werten."""
-    return f"{10**val:.0f}"
+    return f"{10 ** val:.0f}"
