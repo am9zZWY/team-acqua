@@ -1,0 +1,26 @@
+# Remove IDE related files
+.idea
+
+# Ignore datasets and outputs
+*.csv
+*.pdf
+*.png
+./out
+
+# LaTeX related files
+*.aux
+*.log
+*.out
+
+# Ignore python related files
+*.pyc
+*.pyo
+
+# Ignore environment related files
+.venv
+
+# Mac related files
+.DS_Store
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
